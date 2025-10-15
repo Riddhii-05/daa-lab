@@ -1,0 +1,17 @@
+class Solution:
+    def optimalSearchTree(self, keys, freq, n):
+        cost = [[0 for _ in range(n)] for _ in range(n)]
+        for i in range(n):
+            cost[i][i] = freq[i]
+        for L in range(2, n + 1):
+            for i in range(n - L + 1):
+                j = i + L - 1
+                cost[i][j] = float('inf')
+                total_freq = sum(freq[i:j + 1])
+                for r in range(i, j + 1):
+                    left_cost = cost[i][r - 1] if r > i else 0
+                    right_cost = cost[r + 1][j] if r < j else 0
+                    total_cost = left_cost + right_cost + total_freq
+                    if total_cost < cost[i][j]:
+                        cost[i][j] = total_cost
+        return cost[0][n - 1]
